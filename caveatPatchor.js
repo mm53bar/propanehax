@@ -305,13 +305,13 @@ if (true) {
           var diff = code[0].innerText
           if (diff.match(/^\+\+\+/m)) {
             var lines = diff.split("\n").map(function(line){
-              if (line.match(/^(diff|index|\+\+\+|---)/)) {
+              if (line.match(/^(diff|index)/)) {
                 return "<b>"+line.escapeHTML()+"</b>"
               } else if (match = line.match(/^(@@.+?@@)(.*)$/)) {
                 return "<b>"+match[1]+"</b> " + match[2].escapeHTML()
-              } else if (line.match(/^\+\s+/)) {
+              } else if (line.match(/^\+/)) {
                 return "<font style='color:green'>"+line.escapeHTML()+"</font>"
-              } else if (line.match(/^\-\s+/)) {
+              } else if (line.match(/^\-/)) {
                 return "<font style='color:red'>"+line.escapeHTML()+"</font>"
               } else {
                 return line.escapeHTML()
