@@ -264,14 +264,14 @@ if (true) {
     detectBuild: function(message) {
       if (!message.pending() && message.kind === 'text') {
         var body = message.bodyElement()
-        if (body.innerText.match(/^Build #(\d+) \([0-9a-zA-Z]+\) of github-([-_0-9a-zA-Z]+)/)) {
+        if (body.innerText.match(/^Build #(\d+) \([0-9a-zA-Z]+\) of (github-)?([-_0-9a-zA-Z]+)/)) {
           var failed_p = body.innerText.match(/failed/);
           message.bodyCell.setStyle({
             color: failed_p ? '#ff0000' : '#00941f',
             fontWeight: 'bold'
           })
 
-          body.replace(body.outerHTML.replace(/#(\d+) \(([0-9a-zA-Z]+)\) of github-([-_0-9a-zA-Z]+)/, '<a target="_blank" href="http://ci2.rs.github.com:8080/job/github-$3/$1/console">#$1</a> ($2) of github-$3'));
+          body.replace(body.outerHTML.replace(/#(\d+) \(([0-9a-zA-Z]+)\) of (?:github-)?([-_0-9a-zA-Z]+)/, '<a target="_blank" href="http://ci2.rs.github.com:8080/job/github-$3/$1/console">#$1</a> ($2) of github-$3'));
         }
       }
     },
@@ -346,11 +346,11 @@ if (true) {
   Campfire.HTMLExpander = Class.create({
     initialize: function(chat) {
       this.chat = chat;
-      var messages = this.chat.transcript.messages;
-      for (var i = 0; i < messages.length; i++) {
-        this.detectHTML(messages[i]);
-      }
-      this.chat.windowmanager.scrollToBottom();
+      // var messages = this.chat.transcript.messages;
+      // for (var i = 0; i < messages.length; i++) {
+      //   this.detectHTML(messages[i]);
+      // }
+      // this.chat.windowmanager.scrollToBottom();
     },
 
     detectHTML: function(message) {
