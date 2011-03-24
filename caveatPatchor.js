@@ -21,7 +21,7 @@ if (displayAvatars) {
       avatar = 'http://globase.heroku.com/redirect/gh.gravatars.' + this.authorID() + '?default=https://github.com/images/gravatars/gravatar-140.png';
       name = '<strong style="color:#333;">'+author.textContent+'</strong>'
 
-      if (['enter','kick'].include(this.kind)) {
+      if (['enter','leave','kick'].include(this.kind)) {
         imgSize = 16
         body = body.select('div:first')[0]
         name += ' '
@@ -33,7 +33,7 @@ if (displayAvatars) {
 
       img = '<img alt="'+this.author()+'" width="'+imgSize+'" height="'+imgSize+'" align="absmiddle" style="opacity: 1.0; margin: 0px; border-radius:3px" src="'+avatar+'">'
 
-      if (['enter','kick'].include(this.kind)) {
+      if (['enter','leave','kick'].include(this.kind)) {
         name = img + '&nbsp;&nbsp;' + name;
         img = ''
       }
@@ -57,7 +57,7 @@ if (displayAvatars) {
       this.addAvatar();
     },
     authorElement: function($super) {
-      if (this.kind == 'enter' || this.kind == 'kick') {
+      if (['enter','leave','kick'].include(this.kind)) {
         return $super().select('span.author')[0]
       } else {
         return $super()
@@ -382,15 +382,49 @@ if (true) {
   window.chat.installPropaneResponder("HTMLExpander", "htmlexpander");
 }
 
+if (true) {
+  swizzle(Campfire.StarManager, {
+    toggle: function($super, element) {
+      $super(element);
+
+      var star = $(element).up('span.star'),
+          message = this.chat.findMessage(element)
+      if (star.hasClassName('starred')) {
+        trackStar(message);
+      }
+    }
+  });
+
+  // 5490ef76-50fa-11e0-8fed-2495f6688d41
+  // bb628a4e-5199-11e0-949d-2e03dd584bf3 is a test cluster
+  function trackStar(message) {
+    var id   = message.id()
+      , url  = "http://allofthestars.com/clusters/5490ef76-50fa-11e0-8fed-2495f6688d41/campfire" +
+        "?message="    + encodeURIComponent(message.bodyElement().innerText) +
+        "&message_id=" + encodeURIComponent(id.toString()) +
+        "&url="        + encodeURIComponent(starPermalink(id)) +
+        "&author="     + encodeURIComponent(message.author()) +
+        "&room="       + encodeURIComponent($('room_name').innerText)
+    alert(id)
+    window.propane.requestJSON(id, url)
+  }
+
+  function starPermalink(id) {
+    return location.href.toString().replace(/#.*/, '') +
+      "transcript/message/" + id + "#message_" + id
+  }
+}
+
+Autolink['Emoji']['bear'] = '1f40b'
 window.chat.messageHistory = 800;
 
+/* focus/scroll hax */
 // var $focused = true;
 // window.onfocus = function(){ alert(1); $focused = true  }
 // window.onblur  = function(){ $focused = false }
-
 // swizzle(Campfire.WindowManager, {
 //   isScrolledToBottom: function($super) {
 //     return $focused ? $super() : false;
 //   }
 // });
-//
+
