@@ -405,7 +405,6 @@ if (true) {
         "&url="        + encodeURIComponent(starPermalink(id)) +
         "&author="     + encodeURIComponent(message.author()) +
         "&room="       + encodeURIComponent($('room_name').innerText)
-    alert(id)
     window.propane.requestJSON(id, url)
   }
 
