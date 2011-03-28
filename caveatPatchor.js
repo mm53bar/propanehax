@@ -19,7 +19,7 @@ if (displayAvatars) {
 
       // avatar = author.getAttribute('data-avatar') || 'http://asset1.37img.com/global/missing/avatar.png?r=3';
       avatar = 'http://globase.heroku.com/redirect/gh.gravatars.' + this.authorID() + '?default=https://github.com/images/gravatars/gravatar-140.png';
-      name = '<strong style="color:#333;">'+author.textContent+'</strong>'
+      name = '<strong class="authorName" style="color:#333;">'+author.textContent+'</strong>'
 
       if (['enter','leave','kick'].include(this.kind)) {
         imgSize = 16
@@ -41,7 +41,7 @@ if (displayAvatars) {
       if (author.visible()) {
         author.hide();
 
-        if (body.select('strong').length === 0) {
+        if (body.select('strong.authorName').length === 0) {
           body.insert({top: name});
           if (img)
             author.insert({after: img});
