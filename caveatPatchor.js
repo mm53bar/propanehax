@@ -2,6 +2,8 @@ var displayAvatars = true;
 
 if (displayAvatars) {
 
+  var USER_ACTIONS = ['enter','leave','kick','conference_created'];
+
   Object.extend(Campfire.Message.prototype, {
     authorID: function() {
       if (Element.hasClassName(this.element, 'you'))
@@ -21,9 +23,10 @@ if (displayAvatars) {
       avatar = 'http://globase.heroku.com/redirect/gh.gravatars.' + this.authorID() + '?default=https://github.com/images/gravatars/gravatar-140.png';
       name = '<strong class="authorName" style="color:#333;">'+author.textContent+'</strong>'
 
-      if (['enter','leave','kick'].include(this.kind)) {
+      if (USER_ACTIONS.include(this.kind)) {
         imgSize = 16
-        body = body.select('div:first')[0]
+        if ('conference_created' != this.kind)
+          body = body.select('div:first')[0]
         name += ' '
       } else if (this.actsLikeTextMessage()) {
         name += '<br>'
@@ -33,7 +36,7 @@ if (displayAvatars) {
 
       img = '<img alt="'+this.author()+'" width="'+imgSize+'" height="'+imgSize+'" align="absmiddle" style="opacity: 1.0; margin: 0px; border-radius:3px" src="'+avatar+'">'
 
-      if (['enter','leave','kick'].include(this.kind)) {
+      if (USER_ACTIONS.include(this.kind)) {
         name = img + '&nbsp;&nbsp;' + name;
         img = ''
       }
@@ -57,7 +60,7 @@ if (displayAvatars) {
       this.addAvatar();
     },
     authorElement: function($super) {
-      if (['enter','leave','kick'].include(this.kind)) {
+      if (USER_ACTIONS.include(this.kind)) {
         return $super().select('span.author')[0]
       } else {
         return $super()
