@@ -419,7 +419,57 @@ if (true) {
   }
 }
 
-Autolink['Emoji']['bear'] = '1f40b'
+if (true) {
+  Autolink['Emoji']['bear'] = '1f40b'
+  CAMPFIRE_EMOJI = new Hash(Autolink.Emoji).inject({}, function(hash,v){ hash[v[1]]=v[0]; return hash })
+  // from GitHub::HTML::EmojiFilter::EmojiPattern
+  GITHUB_EMOJI = /:(bus|v|new|bike|moneybag|wheelchair|bomb|cake|fire|clap|art|punch|tm|smoking|\-1|lock|zzz|pencil|memo|fish|cop|beer|runner|feet|scissors|sunny|thumbsup|tophat|ski|\+1|fist|ok|heart|calling|leaves|airplane|computer|star|vs|mega|lipstick|mag|warning|octocat|thumbsdown|bear|key|cool|book|iphone|sparkles|bulb|gift|zap|taxi|train|email|hammer):/g
+
+  Campfire.EmojiExpander = Class.create({
+    initialize: function(chat) {
+      this.chat = chat;
+      var messages = this.chat.transcript.messages;
+      for (var i = 0; i < messages.length; i++) {
+        this.detectEmoji(messages[i]);
+      }
+      this.chat.windowmanager.scrollToBottom();
+    },
+
+    detectEmoji: function(message) {
+      if (message.actsLikeTextMessage()) {
+        var body = message.bodyElement()
+        var emoji = body.select('span.emoji');
+        emoji.each(function(e){
+          var code = e.className.match(/emoji([\da-f]+)/)[1]
+          e.replace(':' + CAMPFIRE_EMOJI[code] + ':')
+        })
+        var html = body.innerHTML
+        var match = html.match(GITHUB_EMOJI)
+        if (match) {
+          body.innerHTML = html.replace(GITHUB_EMOJI, function(all,e){ return "<img src='https://d3nwyuy0nl342s.cloudfront.net/images/icons/emoji/v2/"+e+".png' height='30' width='30' align='absmiddle'/>" })
+        }
+      }
+    },
+
+    onMessagesInsertedBeforeDisplay: function(messages) {
+      var scrolledToBottom = this.chat.windowmanager.isScrolledToBottom();
+      for (var i = 0; i < messages.length; i++) {
+        this.detectEmoji(messages[i]);
+      }
+      if (scrolledToBottom) {
+        this.chat.windowmanager.scrollToBottom();
+      }
+    },
+
+    onMessageAccepted: function(message, messageID) {
+      this.detectEmoji(message);
+    }
+  });
+
+  Campfire.Responders.push("EmojiExpander");
+  window.chat.installPropaneResponder("EmojiExpander", "emojiexpander");
+}
+
 window.chat.messageHistory = 800;
 
 /* focus/scroll hax */
