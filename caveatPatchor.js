@@ -20,7 +20,7 @@ if (displayAvatars) {
         avatar, name, imgSize = 32, img;
 
       // avatar = author.getAttribute('data-avatar') || 'http://asset1.37img.com/global/missing/avatar.png?r=3';
-      avatar = 'http://globase.heroku.com/redirect/gh.gravatars.' + this.authorID() + '?default=https://github.com/images/gravatars/gravatar-140.png';
+      avatar = 'http://globase.heroku.com/redirect/gh.gravatars.' + this.authorID() + '?default=http://github.com/images/gravatars/gravatar-140.png';
       name = '<strong class="authorName" style="color:#333;">'+author.textContent+'</strong>'
 
       if (USER_ACTIONS.include(this.kind)) {
@@ -126,7 +126,7 @@ if (true) {
           for (var i=0; i < names.length; i++) {
             var name = names[i];
             name = name.replace(/\s+/g,'').toLowerCase()
-            avatar = 'http://globase.heroku.com/redirect/gh.gravatars.' + name + '?default=https://github.com/images/gravatars/gravatar-140.png';
+            avatar = 'http://globase.heroku.com/redirect/gh.gravatars.' + name + '?default=http://github.com/images/gravatars/gravatar-140.png';
             pics.push('<img alt="'+name+'" width="32" height="32" align="middle" style="margin-right: 1px; opacity: 1.0; border-radius:3px" src="'+avatar+'">')
           }
 
@@ -162,8 +162,6 @@ if (true) {
     },
 
     detectGitHubURL: function(message) {
-      /* we are going to use the messageID to uniquely identify our requestJSON request
-         so we don't check pending messages */
       if (!message.pending() && message.kind === 'text') {
         var iframe = null, elem, height = 150;
 
@@ -191,12 +189,12 @@ if (true) {
           iframe = href + '#L1';
         }
 
-        // var commits = message.bodyElement().select('a[href*=/commit/]')
-        // if (commits.length == 1) {
-        //   elem = commits[0];
-        //   var href = elem.getAttribute('href');
-        //   iframe = href + '#toc';
-        // }
+        var commits = message.bodyElement().select('a[href*=/commit/]')
+        if (!iframe && commits.length == 1 && message.author() != 'Hubot') {
+          elem = commits[0];
+          var href = elem.getAttribute('href');
+          iframe = href + '#diff-stat';
+        }
 
         if (!iframe) return;
         message.bodyElement().insert({bottom:"<iframe style='border:0; margin-top: 5px' height='"+height+"' width='98%' src='"+iframe+"'></iframe>"});
@@ -446,7 +444,12 @@ if (true) {
         var html = body.innerHTML
         var match = html.match(GITHUB_EMOJI)
         if (match) {
-          body.innerHTML = html.replace(GITHUB_EMOJI, function(all,e){ return "<img src='https://d3nwyuy0nl342s.cloudfront.net/images/icons/emoji/v2/"+e+".png' height='30' width='30' align='absmiddle'/>" })
+          body.innerHTML = html.replace(GITHUB_EMOJI, function(all, e){
+            var size = 28
+            if (e == 'octocat') size = 40
+            if (message.author() == 'Hubot') size = 18
+            return "<img src='http://d3nwyuy0nl342s.cloudfront.net/images/icons/emoji/v2/"+e+".png' height='"+size+"' width='"+size+"' align='absmiddle'/>"
+          })
         }
       }
     },
