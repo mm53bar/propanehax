@@ -473,6 +473,55 @@ if (true) {
   window.chat.installPropaneResponder("EmojiExpander", "emojiexpander");
 }
 
+if (true) {
+  Campfire.MusicExpander = Class.create({
+    initialize: function(chat) {
+      this.chat = chat;
+      var messages = this.chat.transcript.messages;
+      for (var i = 0; i < messages.length; i++) {
+        this.detectMusic(messages[i]);
+      }
+      this.chat.windowmanager.scrollToBottom();
+    },
+
+    detectMusic: function(message) {
+      if (message.actsLikeTextMessage()) {
+        var body = message.bodyElement()
+        var html = body.innerHTML
+
+        var match = html.match(/is listening to "(.*)" by (.*), from the album "(.*)"/i)
+        if (match) {
+          var song = match[1], artist = match[2], album = match[3]
+          var url = "http://www.amazon.com/s/ref=nb_sb_noss?url=search-alias%3Ddigital-music&x=8&y=16&field-keywords="
+          var linkify = function(text, query){
+            if (!query) query = text
+            return new Element('a', {target:'_blank',href:url+encodeURI(query)}).update(text).outerHTML;
+          }
+
+          body.innerHTML = html.replace(song, linkify(song, song+" "+artist+" "+album)).replace(artist, linkify(artist)).replace(album, linkify(album, artist+" "+album))
+        }
+      }
+    },
+
+    onMessagesInsertedBeforeDisplay: function(messages) {
+      var scrolledToBottom = this.chat.windowmanager.isScrolledToBottom();
+      for (var i = 0; i < messages.length; i++) {
+        this.detectMusic(messages[i]);
+      }
+      if (scrolledToBottom) {
+        this.chat.windowmanager.scrollToBottom();
+      }
+    },
+
+    onMessageAccepted: function(message, messageID) {
+      this.detectMusic(message);
+    }
+  });
+
+  Campfire.Responders.push("MusicExpander");
+  window.chat.installPropaneResponder("MusicExpander", "musicexpander");
+}
+
 window.chat.messageHistory = 800;
 
 /* focus/scroll hax */
