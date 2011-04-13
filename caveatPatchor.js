@@ -186,14 +186,20 @@ if (true) {
         if (!iframe && blobs.length == 1) {
           elem = blobs[0];
           var href = elem.getAttribute('href');
-          iframe = href + '#L1';
+          if (href.indexOf('#') > -1)
+            iframe = href;
+          else
+            iframe = href + '#L1';
         }
 
         var commits = message.bodyElement().select('a[href*=/commit/]')
         if (!iframe && commits.length == 1 && message.author() != 'Hubot') {
           elem = commits[0];
           var href = elem.getAttribute('href');
-          iframe = href + '#diff-stat';
+          if (href.indexOf('#') > -1)
+            iframe = href;
+          else
+            iframe = href + '#diff-stat';
         }
 
         if (!iframe) return;
@@ -498,7 +504,17 @@ if (true) {
             return new Element('a', {target:'_blank',href:url+encodeURI(query)}).update(text).outerHTML;
           }
 
-          body.innerHTML = html.replace(song, linkify(song, song+" "+artist+" "+album)).replace(artist, linkify(artist)).replace(album, linkify(album, artist+" "+album))
+          html = 'is listening to "'
+          if (song)
+            html += linkify(song, song+" "+artist+" "+album)
+          html += '" by '
+          if (artist)
+            html += linkify(artist)
+          html += ', from the album "'
+          if (album)
+            html += linkify(album, artist+" "+album)
+          html += '"'
+          body.innerHTML = html
         }
       }
     },
