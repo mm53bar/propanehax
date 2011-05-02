@@ -679,7 +679,7 @@ if (true) {
         var body = message.bodyElement()
         var html = body.innerHTML
 
-        var match = html.match(/is listening to "(.*)" by (.*), from the album "(.*)"/i)
+        var match = html.match(/(?:Now playing|is listening to) "(.*)" by (.*), from(?: the album)? "(.*)"/i)
         if (match) {
           var song = match[1], artist = match[2], album = match[3]
           var url = "http://www.amazon.com/s/ref=nb_sb_noss?url=search-alias%3Ddigital-music&x=8&y=16&field-keywords="
