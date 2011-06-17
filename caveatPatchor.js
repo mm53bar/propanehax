@@ -611,7 +611,7 @@ if (true) {
   Autolink['Emoji']['bear'] = '1f40b'
   CAMPFIRE_EMOJI = new Hash(Autolink.Emoji).inject({}, function(hash,v){ hash[v[1]]=v[0]; return hash })
   // from GitHub::HTML::EmojiFilter::EmojiPattern
-  GITHUB_EMOJI = /:(bus|v|new|bike|moneybag|wheelchair|bomb|cake|fire|clap|art|punch|tm|smoking|\-1|lock|zzz|pencil|memo|fish|cop|beer|runner|feet|scissors|sunny|thumbsup|tophat|ski|\+1|fist|ok|heart|calling|leaves|airplane|computer|star|vs|mega|lipstick|mag|warning|octocat|thumbsdown|bear|key|cool|book|iphone|sparkles|bulb|gift|zap|taxi|train|email|hammer):/g
+  GITHUB_EMOJI = /:(sparkles|key|scissors|octocat|warning|heart|clap|airplane|leaves|new|broken_heart|ok|couple|fire|iphone|sunny|rainbow|email|book|mag|koala|mega|apple|dog|princess|rose|calling|tophat|beer|art|v|cat|ski|thumbsup|punch|dolphin|cloud|zap|bear|fist|horse|lock|smoking|moneybag|computer|cake|taxi|cool|feet|tm|kiss|train|bulb|thumbsdown|sunflower|nail_care|bike|hammer|gift|lipstick|fish|zzz|lips|bus|star|cop|pencil|bomb|vs|memo|\-1|\+1|runner|wheelchair):/g
 
   Campfire.EmojiExpander = Class.create({
     initialize: function(chat) {
@@ -624,7 +624,7 @@ if (true) {
     },
 
     detectEmoji: function(message) {
-      if (message.actsLikeTextMessage()) {
+      if (message.kind == 'text') {
         var body = message.bodyElement()
         var emoji = body.select('span.emoji');
         emoji.each(function(e){
@@ -679,16 +679,17 @@ if (true) {
         var body = message.bodyElement()
         var html = body.innerHTML
 
-        var match = html.match(/(?:Now playing|is listening to) "(.*)" by (.*), from(?: the album)? "(.*)"/i)
+        var match = html.match(/(Now playing|is listening to|Queued up) "(.*)" by (.*), from(?: the album)? "(.*)"/i)
         if (match) {
-          var song = match[1], artist = match[2], album = match[3]
+          var text = match[1]
+          var song = match[2], artist = match[3], album = match[4]
           var url = "http://www.amazon.com/s/ref=nb_sb_noss?url=search-alias%3Ddigital-music&x=8&y=16&field-keywords="
           var linkify = function(text, query){
             if (!query) query = text
             return new Element('a', {target:'_blank',href:url+encodeURI(query)}).update(text).outerHTML;
           }
 
-          html = 'is listening to "'
+          html = text + ' "'
           if (song)
             html += linkify(song, song+" "+artist+" "+album)
           html += '" by '
