@@ -656,7 +656,7 @@ if (true) {
             var size = 28
             if (e == 'octocat') size = 40
             if (message.author() == 'Hubot') size = 18
-            return "<img src='http://d3nwyuy0nl342s.cloudfront.net/images/icons/emoji/v2/"+e+".png' height='"+size+"' width='"+size+"' align='absmiddle'/>"
+            return "<img title=':"+e+":' alt=':"+e+":' src='http://d3nwyuy0nl342s.cloudfront.net/images/icons/emoji/v2/"+e+".png' height='"+size+"' width='"+size+"' align='absmiddle'/>"
           })
         }
       }
