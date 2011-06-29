@@ -467,6 +467,7 @@ if (true) {
 
           var sha = body.innerText.match(/\(([0-9a-z]+)\)/i)[1]
           var build = body.outerHTML.replace(/#(\d+) \(([0-9a-zA-Z]+)\) of (?:github-)?([-_0-9a-zA-Z]+)/, '<a target="_blank" href="http://ci2.rs.github.com:8080/job/github-$3/$1/console">#$1</a> ($2) of github-$3')
+          var btime = build.match(/\d+s/)
           body.replace(build)
           build = build.replace(/^.*?<a/,'<a').replace(/<\/a>.*/, '</a>')
 
@@ -476,6 +477,7 @@ if (true) {
               var otherMsg = this.chat.transcript.messages[i]
               if (otherMsg.element.innerHTML.match("/commit/" + sha)) {
                 build = build.replace(/<\/a>.*$/, '</a>').replace('Build ','');
+                if (btime) build += "] [" + btime;
                 otherMsg.bodyElement().insert({bottom: " ["+build+"]"})
                 otherMsg.bodyCell.setStyle({color:color,fontWeight:'bold'})
                 message.element.remove()
