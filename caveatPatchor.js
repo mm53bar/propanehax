@@ -179,7 +179,7 @@ var displayAvatars = true;
 
 if (displayAvatars) {
 
-  var USER_ACTIONS = ['enter','leave','kick','conference_created'];
+  var USER_ACTIONS = ['enter','leave','kick','conference_created','lock','unlock'];
 
   Object.extend(Campfire.Message.prototype, {
     authorID: function() {
