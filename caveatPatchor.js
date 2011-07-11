@@ -466,7 +466,12 @@ if (true) {
             })
 
           var sha = body.innerText.match(/\(([0-9a-z]+)\)/i)[1]
-          var build = body.outerHTML.replace(/#(\d+) \(([0-9a-zA-Z]+)\) of (?:github-)?([-_0-9a-zA-Z]+)/, '<a target="_blank" href="http://ci2.rs.github.com:8080/job/github-$3/$1/console">#$1</a> ($2) of github-$3')
+          var build;
+          if (body.outerHTML.match(/github-/)) {
+            build = body.outerHTML.replace(/#(\d+) \(([0-9a-zA-Z]+)\) of (?:github-)?([-_0-9a-zA-Z]+)/, '<a target="_blank" href="http://ci2.rs.github.com:8080/job/github-$3/$1/console">#$1</a> ($2) of github-$3')
+          } else {
+            build = body.outerHTML.replace(/#(\d+) \(([0-9a-zA-Z]+)\) of ([-_0-9a-zA-Z]+)/, '<a target="_blank" href="https://janky.rs.github.com/$1/output">#$1</a> ($2) of $3')
+          }
           var btime = build.match(/\d+s/)
           body.replace(build)
           build = build.replace(/^.*?<a/,'<a').replace(/<\/a>.*/, '</a>')
