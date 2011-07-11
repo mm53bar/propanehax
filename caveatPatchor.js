@@ -377,7 +377,7 @@ if (true) {
         }
 
         var commits = message.bodyElement().select('a[href*=/commit/]')
-        if (!iframe && commits.length == 1 && message.author() != 'Hubot') {
+        if (!iframe && commits.length == 1 && message.author() != 'Hubot' && message.author() != 'Git') {
           elem = commits[0];
           var href = elem.getAttribute('href');
           if (href.indexOf('#') > -1)
