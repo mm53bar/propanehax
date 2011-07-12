@@ -1,3 +1,5 @@
+var enable_iframes = true;
+
 /* MD5 LIB */
 /*
  * A JavaScript implementation of the RSA Data Security, Inc. MD5 Message
@@ -386,7 +388,7 @@ if (true) {
             iframe = href + '#diff-stat';
         }
 
-        if (!iframe) return;
+        if (!iframe || !enable_iframes) return;
         message.bodyElement().insert({bottom:"<iframe style='border:0; margin-top: 5px' height='"+height+"' width='98%' src='"+iframe+"'></iframe>"});
       }
     },
