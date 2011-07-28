@@ -1,4 +1,5 @@
-var enable_iframes = true;
+SOUND_HATERS = ["Kyle", "TPW", "Tekkub", "Chris", "Josh", "rtomayko", "Melissa", "Tim", "Ben", "JP"]
+IFRAME_HATERS = ['rtomayko']
 
 /* MD5 LIB */
 /*
@@ -39,7 +40,7 @@ function str2blks_MD5(str)
 }
 
 /*
- * Add integers, wrapping at 2^32. This uses 16-bit operations internally 
+ * Add integers, wrapping at 2^32. This uses 16-bit operations internally
  * to work around bugs in some JS interpreters.
  */
 function add(x, y)
@@ -115,7 +116,7 @@ function calcMD5(str)
     a = ff(a, b, c, d, x[i+12], 7 ,  1804603682);
     d = ff(d, a, b, c, x[i+13], 12, -40341101);
     c = ff(c, d, a, b, x[i+14], 17, -1502002290);
-    b = ff(b, c, d, a, x[i+15], 22,  1236535329);    
+    b = ff(b, c, d, a, x[i+15], 22,  1236535329);
 
     a = gg(a, b, c, d, x[i+ 1], 5 , -165796510);
     d = gg(d, a, b, c, x[i+ 6], 9 , -1069501632);
@@ -133,7 +134,7 @@ function calcMD5(str)
     d = gg(d, a, b, c, x[i+ 2], 9 , -51403784);
     c = gg(c, d, a, b, x[i+ 7], 14,  1735328473);
     b = gg(b, c, d, a, x[i+12], 20, -1926607734);
-    
+
     a = hh(a, b, c, d, x[i+ 5], 4 , -378558);
     d = hh(d, a, b, c, x[i+ 8], 11, -2022574463);
     c = hh(c, d, a, b, x[i+11], 16,  1839030562);
@@ -188,7 +189,7 @@ if (displayAvatars) {
       if (Element.hasClassName(this.element, 'you'))
         return this.chat.userID;
 
-      var idtext = (this.element.className.match(/\s*user_(\d+)\s*/) || [])[1]; 
+      var idtext = (this.element.className.match(/\s*user_(\d+)\s*/) || [])[1];
       return parseInt(idtext) || 0;
     },
 
@@ -388,7 +389,7 @@ if (true) {
             iframe = href + '#diff-stat';
         }
 
-        if (!iframe || !enable_iframes) return;
+        if (!iframe || IFRAME_HATERS.include(this.chat.username)) return;
         message.bodyElement().insert({bottom:"<iframe style='border:0; margin-top: 5px' height='"+height+"' width='98%' src='"+iframe+"'></iframe>"});
       }
     },
@@ -577,7 +578,11 @@ if (true) {
       if (!message.pending() && ['text','paste'].include(message.kind)) {
         var body = message.bodyElement()
         var match = body.innerText.match(/^HTML!\s+(.+)$/m);
-        if (match && !body.innerText.match(/<\s*script/)) {
+
+        // Some people can't handle this much fun
+        var halt = SOUND_HATERS.include(this.chat.username) && body.innerText.match(/<audio/)
+
+        if (!halt && match && !body.innerText.match(/<\s*script/)) {
           body.update(match[1])
         }
       }
