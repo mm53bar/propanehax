@@ -431,6 +431,12 @@ if (true) {
             color: '#888888'
           })
         }
+        else if (body.innerText.match(/^\w+'s deploy of (.*) failed$/)) {
+          message.bodyCell.setStyle({
+            color: '#ff0000',
+            fontWeight: 'bold'
+          })
+        }
       }
     },
 
