@@ -651,6 +651,24 @@ if (true) {
   // from GitHub::HTML::EmojiFilter::EmojiPattern
   GITHUB_EMOJI = /:(sparkles|key|scissors|octocat|warning|heart|clap|airplane|leaves|new|broken_heart|ok|couple|fire|iphone|sunny|rainbow|email|book|mag|koala|mega|apple|dog|princess|rose|calling|tophat|beer|art|v|cat|ski|thumbsup|punch|dolphin|cloud|zap|bear|fist|horse|lock|smoking|moneybag|computer|cake|taxi|cool|feet|tm|kiss|train|bulb|thumbsdown|sunflower|nail_care|bike|hammer|gift|lipstick|fish|zzz|lips|bus|star|cop|pencil|bomb|vs|memo|\-1|\+1|runner|wheelchair):/g
   GITHUB_STAFF = /:(alex|atmos|aw|ben|benburkert|brianmario|bryan|cameron|chris|heather|hubot|jason|jesse|jina|josh|jp|kami|kevin|kyle|maddox|matt|melissa|nick|paul|peff|petros|pj|probablycorey|rick|rtomayko|scott|sr|tekkub|tater|tclem|tim|tpw|tmm1|vicent|zach):/ig
+  ALIAS = {
+    mtodd: 'matt',
+    matttodd: 'matt',
+    mattmatttoddtodd: 'matt',
+    risk: 'rick',
+    kneath: 'kyle',
+    mojombo: 'tpw',
+    defunkt: 'chris',
+    technoweenie: 'rick',
+    aman: 'tmm1',
+    beard: 'brianmario',
+    pug: 'tater',
+    holman: 'zach',
+    ryan: 'rtomayko',
+    tom: 'tpw',
+    tanoku: 'vicent'
+  }
+  GITHUB_ALIAS = new RegExp(":(" + new Hash(ALIAS).keys().join("|") + "):", 'ig')
 
   Campfire.EmojiExpander = Class.create({
     initialize: function(chat) {
@@ -685,8 +703,20 @@ if (true) {
         var match = html.match(GITHUB_STAFF)
         if (match) {
           body.innerHTML = html.replace(GITHUB_STAFF, function(all, e){
-            var size = 32
+            var size = 28
+            if (message.author() == 'Hubot') size = 18
             return "<img title=':"+e+":' alt=':"+e+":' src='http://globase.heroku.com/redirect/gh.gravatars."+e.toLowerCase()+"' height='"+size+"' width='"+size+"' align='absmiddle' style='margin-right: 1px; margin-bottom: 1px; opacity: 1.0; border-radius:3px'/>"
+          })
+        }
+
+        var html = body.innerHTML
+        var match = html.match(GITHUB_ALIAS)
+        if (match) {
+          body.innerHTML = html.replace(GITHUB_ALIAS, function(all, e){
+            var size = 28
+            var name = ALIAS[e]
+            if (message.author() == 'Hubot') size = 18
+            return "<img title=':"+e+":' alt=':"+e+":' src='http://globase.heroku.com/redirect/gh.gravatars."+name.toLowerCase()+"' height='"+size+"' width='"+size+"' align='absmiddle' style='margin-right: 1px; margin-bottom: 1px; opacity: 1.0; border-radius:3px'/>"
           })
         }
       }
