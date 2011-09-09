@@ -650,6 +650,7 @@ if (true) {
   CAMPFIRE_EMOJI = new Hash(Autolink.Emoji).inject({}, function(hash,v){ hash[v[1]]=v[0]; return hash })
   // from GitHub::HTML::EmojiFilter::EmojiPattern
   GITHUB_EMOJI = /:(sparkles|key|scissors|octocat|warning|heart|clap|airplane|leaves|new|broken_heart|ok|couple|fire|iphone|sunny|rainbow|email|book|mag|koala|mega|apple|dog|princess|rose|calling|tophat|beer|art|v|cat|ski|thumbsup|punch|dolphin|cloud|zap|bear|fist|horse|lock|smoking|moneybag|computer|cake|taxi|cool|feet|tm|kiss|train|bulb|thumbsdown|sunflower|nail_care|bike|hammer|gift|lipstick|fish|zzz|lips|bus|star|cop|pencil|bomb|vs|memo|\-1|\+1|runner|wheelchair):/g
+  GITHUB_STAFF = /:(alex|atmos|aw|ben|benburkert|brianmario|bryan|cameron|chris|heather|hubot|jason|jesse|jina|josh|jp|kami|kevin|kyle|maddox|matt|melissa|nick|paul|peff|petros|pj|probablycorey|rick|rtomayko|scott|sr|tekkub|tater|tclem|tim|tpw|tmm1|vicent|zach):/ig
 
   Campfire.EmojiExpander = Class.create({
     initialize: function(chat) {
@@ -677,6 +678,15 @@ if (true) {
             if (e == 'octocat') size = 40
             if (message.author() == 'Hubot') size = 18
             return "<img title=':"+e+":' alt=':"+e+":' src='http://d3nwyuy0nl342s.cloudfront.net/images/icons/emoji/v2/"+e+".png' height='"+size+"' width='"+size+"' align='absmiddle'/>"
+          })
+        }
+
+        var html = body.innerHTML
+        var match = html.match(GITHUB_STAFF)
+        if (match) {
+          body.innerHTML = html.replace(GITHUB_STAFF, function(all, e){
+            var size = 32
+            return "<img title=':"+e+":' alt=':"+e+":' src='http://globase.heroku.com/redirect/gh.gravatars."+e.toLowerCase()+"' height='"+size+"' width='"+size+"' align='absmiddle' style='margin-right: 1px; margin-bottom: 1px; opacity: 1.0; border-radius:3px'/>"
           })
         }
       }
