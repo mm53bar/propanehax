@@ -370,7 +370,7 @@ if (true) {
         }
 
         var blobs = message.bodyElement().select('a[href*="/blob/"]');
-        if (!iframe && blobs.length == 1) {
+        if (!iframe && blobs.length == 1 && message.author() != 'Hubot') {
           elem = blobs[0];
           var href = elem.getAttribute('href');
           if (href.indexOf('#') > -1)
