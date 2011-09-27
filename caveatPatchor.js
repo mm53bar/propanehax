@@ -651,7 +651,7 @@ if (true) {
   // from GitHub::HTML::EmojiFilter::EmojiPattern
   GITHUB_EMOJI = /:(sparkles|key|scissors|octocat|warning|heart|clap|airplane|leaves|new|broken_heart|ok|couple|fire|iphone|sunny|rainbow|email|book|mag|koala|mega|apple|dog|princess|rose|calling|tophat|beer|art|v|cat|ski|thumbsup|punch|dolphin|cloud|zap|bear|fist|horse|lock|smoking|moneybag|computer|cake|taxi|cool|feet|tm|kiss|train|bulb|thumbsdown|sunflower|nail_care|bike|hammer|gift|lipstick|fish|zzz|lips|bus|star|cop|pencil|bomb|vs|memo|\-1|\+1|runner|wheelchair):/g
   // from github.com/about
-  STAFF = 'hubot,tpw,chris,pj,scott,tekkub,melissa,kyle,rtomayko,zach,rick,atmos,tim,brianmario,petros,bryan,peff,cameron,probablycorey,tclem,sr,tmm1,josh,beth,kevin,alex,vicent,jp,ben,jason,benburkert,heather,kami,matt,maddox,paul,mattg,mccullough,aw,nick,jesse,jina,justin'
+  STAFF = 'hubot,tpw,chris,pj,scott,tekkub,melissa,kyle,rtomayko,zach,rick,atmos,tim,brianmario,petros,bryan,peff,cameron,probablycorey,tclem,sr,tmm1,josh,beth,kevin,alex,vicent,jp,ben,jason,benburkert,heather,kami,matt,maddox,paul,mattg,mccullough,aw,nick,jesse,jina,justin,sonya'
   ALIAS = {
     mtodd: 'matt',
     matttodd: 'matt',
@@ -667,7 +667,8 @@ if (true) {
     holman: 'zach',
     ryan: 'rtomayko',
     tom: 'tpw',
-    tanoku: 'vicent'
+    tanoku: 'vicent',
+    sundaykofax: 'sonya'
   }
   GITHUB_STAFF = new RegExp(":(" + STAFF.split(",").join("|") + "):", 'ig')
   GITHUB_ALIAS = new RegExp(":(" + new Hash(ALIAS).keys().join("|") + "):", 'ig')
