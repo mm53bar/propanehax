@@ -437,6 +437,14 @@ if (true) {
             fontWeight: 'bold'
           })
         }
+
+        if (body.innerText.match(/is deploying/)) {
+          var m = body.innerText.match(/^(.*?) \(http:/i)
+          var links = body.select('a')
+          var build_num = links[1].href.match(/(\d+)$/)[1]
+          var message = m[1].replace(/\((.*?)\)/, function(all,match){ return "(<a href='"+links[0].href+"'>" + match + "</a>)" })
+          body.innerHTML = message + ' [<b><a href="' + links[1].href + '">#' + build_num + '</a></b>]'
+        }
       }
     },
 
