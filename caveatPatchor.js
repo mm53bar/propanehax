@@ -573,22 +573,26 @@ if (true) {
   Campfire.HTMLExpander = Class.create({
     initialize: function(chat) {
       this.chat = chat;
-      // var messages = this.chat.transcript.messages;
-      // for (var i = 0; i < messages.length; i++) {
-      //   this.detectHTML(messages[i]);
-      // }
-      // this.chat.windowmanager.scrollToBottom();
+      var messages = this.chat.transcript.messages;
+      for (var i = 0; i < messages.length; i++) {
+        this.detectHTML(messages[i], true);
+      }
+      this.chat.windowmanager.scrollToBottom();
     },
 
-    detectHTML: function(message) {
+    detectHTML: function(message, noplay) {
       if (!message.pending() && ['text','paste'].include(message.kind)) {
         var body = message.bodyElement()
         var match = body.innerText.match(/^HTML!\s+(.+)$/m);
 
-        // Some people can't handle this much fun
-        var halt = SOUND_HATERS.include(this.chat.username) && body.innerText.match(/<audio/)
+        if (noplay && !body.innerText.match(/<audio/)) return;
 
-        if (!halt && match && !body.innerText.match(/<\s*script/)) {
+        // Some people can't handle this much fun
+        if ((noplay || SOUND_HATERS.include(this.chat.username)) && body.innerText.match(/<audio/)) {
+          match[1] = match[1].replace('autoplay','')
+        }
+
+        if (match && !body.innerText.match(/<\s*script/)) {
           body.update(match[1])
         }
       }
