@@ -523,6 +523,51 @@ if (true) {
 }
 
 if (true) {
+  Campfire.StacheExpander = Class.create({
+    initialize: function(chat) {
+      this.chat = chat;
+      var messages = this.chat.transcript.messages;
+      for (var i = 0; i < messages.length; i++) {
+        this.detectStache(messages[i]);
+      }
+    },
+
+    detectStache: function(message) {
+      if (!message.pending() && message.kind === 'text') {
+        var body = message.bodyElement()
+        var imgs = body.select('a.image[href*="mustachify.me"]')
+        if (imgs.length) {
+          var src = decodeURIComponent(imgs[0].href.replace(/^.*\?src=/,''))
+          alert(src)
+
+          var msgIndex = this.chat.transcript.messages.indexOf(message);
+          if (msgIndex > -1) {
+            for (var i=msgIndex; i > 0 && i > msgIndex - 6; i--) {
+              var otherMsg = this.chat.transcript.messages[i]
+              if (otherMsg.element.select('a.image[href="'+src+'"]').length) {
+                otherMsg.bodyElement().insert({bottom: imgs[0]})
+                message.element.remove()
+                break
+              }
+            }
+          }
+
+        }
+      }
+    },
+
+    onMessagesInsertedBeforeDisplay: function(messages) {
+      for (var i = 0; i < messages.length; i++) {
+        this.detectStache(messages[i]);
+      }
+    }
+  });
+
+  Campfire.Responders.push("StacheExpander");
+  window.chat.installPropaneResponder("StacheExpander", "stacheexpander");
+}
+
+if (true) {
   Campfire.DiffExpander = Class.create({
     initialize: function(chat) {
       this.chat = chat;
