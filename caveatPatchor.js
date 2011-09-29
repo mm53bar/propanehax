@@ -538,13 +538,13 @@ if (true) {
         var imgs = body.select('a.image[href*="mustachify.me"]')
         if (imgs.length) {
           var src = decodeURIComponent(imgs[0].href.replace(/^.*\?src=/,''))
-          alert(src)
 
           var msgIndex = this.chat.transcript.messages.indexOf(message);
           if (msgIndex > -1) {
             for (var i=msgIndex; i > 0 && i > msgIndex - 6; i--) {
               var otherMsg = this.chat.transcript.messages[i]
-              if (otherMsg.element.select('a.image[href="'+src+'"]').length) {
+              if (otherMsg.element.select('a.image[href^="'+src+'"]').length) {
+                otherMsg.bodyElement().select('a.image')[0].setStyle({'padding-right': '5px'})
                 otherMsg.bodyElement().insert({bottom: imgs[0]})
                 message.element.remove()
                 break
