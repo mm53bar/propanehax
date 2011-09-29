@@ -439,11 +439,13 @@ if (true) {
         }
 
         if (body.innerText.match(/is deploying/)) {
-          var m = body.innerText.match(/^(.*?) \(http:/i)
+          var m = body.innerText.match(/^(.*?)(, logs| \(http:)/i)
           var links = body.select('a')
-          var build_num = links[1].href.match(/(\d+)$/)[1]
-          var message = m[1].replace(/\((.*?)\)/, function(all,match){ return "(<a href='"+links[0].href+"'>" + match + "</a>)" })
-          body.innerHTML = message + ' [<b><a href="' + links[1].href + '">#' + build_num + '</a></b>]'
+          if (links.length && m) {
+            var build_num = links[links.length-1].href.match(/(\d+)$/)[1]
+            var message = (links.length == 2) ? m[1].replace(/\((.*?)\)/, function(all,match){ return "(<a href='"+links[0].href+"'>" + match + "</a>)" }) : m[1]
+            body.innerHTML = message + ' [<b><a href="' + links[links.length-1].href + '">#' + build_num + '</a></b>]'
+          }
         }
       }
     },
