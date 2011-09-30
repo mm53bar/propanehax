@@ -443,8 +443,8 @@ if (true) {
           var links = body.select('a')
           if (links.length && m) {
             var build_num = links[links.length-1].href.match(/(\d+)$/)[1]
-            var message = (links.length == 2) ? m[1].replace(/\((.*?)\)/, function(all,match){ return "(<a href='"+links[0].href+"'>" + match + "</a>)" }) : m[1]
-            body.innerHTML = message + ' [<b><a href="' + links[links.length-1].href + '">#' + build_num + '</a></b>]'
+            var message = (links.length == 2) ? m[1].replace(/\((.*?)\)/, function(all,match){ return "(<a target='_blank' href='"+links[0].href+"'>" + match + "</a>)" }) : m[1]
+            body.innerHTML = message + ' [<b><a target="_blank" href="' + links[links.length-1].href + '">#' + build_num + '</a></b>]'
           }
         }
       }
