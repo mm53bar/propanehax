@@ -1,5 +1,5 @@
 SOUND_HATERS = ["Kyle", "TPW", "Tekkub", "Chris", "Josh", "rtomayko", "Melissa", "Tim", "Ben", "JP", "atmos"]
-IFRAME_HATERS = ['rtomayko', 'JP']
+IFRAME_HATERS = ['rtomayko', 'JP', 'Chris']
 
 /* MD5 LIB */
 /*
