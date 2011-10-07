@@ -431,7 +431,7 @@ if (true) {
             color: '#888888'
           })
         }
-        else if (body.innerText.match(/^\w+'s deploy of (.*) failed$/)) {
+        else if (body.innerText.match(/^\w+'s deploy of (.*) failed$|^Failed \w+ deploy/)) {
           message.bodyCell.setStyle({
             color: '#ff0000',
             fontWeight: 'bold'
