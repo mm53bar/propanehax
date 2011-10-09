@@ -546,15 +546,14 @@ if (true) {
             for (var i=msgIndex-1; i > 0 && i > msgIndex - 7; i--) {
               var otherMsg = this.chat.transcript.messages[i]
               var found = otherMsg.bodyElement().select('a.image')
-              var i = ''
               if (found.length) {
-                i = found[0].href.replace(/#\....$/,'')
-              }
-              if (found.length && (i == src || decodeURIComponent(i) == src)) {
-                otherMsg.bodyElement().select('a.image')[0].setStyle({'padding-right': '5px'})
-                otherMsg.bodyElement().insert({bottom: imgs[0]})
-                message.element.remove()
-                break
+                var h = found[0].href.replace(/#\....$/,'')
+                if (h == src || decodeURIComponent(h) == src) {
+                  otherMsg.bodyElement().select('a.image')[0].setStyle({'padding-right': '5px'})
+                  otherMsg.bodyElement().insert({bottom: imgs[0]})
+                  message.element.remove()
+                  break
+                }
               }
             }
           }
