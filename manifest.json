@@ -1,0 +1,16 @@
+{
+  "name": "propanehax",
+  "version": "1.0",
+  "description": "Adds gravatars and other goodies to campfire",
+  "content_scripts": [{
+    "all_frames": true,
+    "run_at": "document_idle",
+    "matches": ["https://*.campfirenow.com/room/*"],
+    "js":  ["setup.js"]
+  }],
+  "permissions": [
+    "tabs",
+    "notifications",
+    "https://*.campfirenow.com/"
+  ]
+}
