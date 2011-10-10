@@ -676,7 +676,7 @@ if (true) {
   window.chat.installPropaneResponder("HTMLExpander", "htmlexpander");
 }
 
-if (true) {
+if (false) {
   swizzle(Campfire.StarManager, {
     toggle: function($super, element) {
       $super(element);
@@ -699,7 +699,7 @@ if (true) {
         "&url="        + encodeURIComponent(starPermalink(id)) +
         "&author="     + encodeURIComponent(message.author()) +
         "&room="       + encodeURIComponent($('room_name').innerText)
-    window.propane.requestJSON(id, url)
+    if (window.propane) window.propane.requestJSON(id, url)
   }
 
   function starPermalink(id) {
