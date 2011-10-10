@@ -1,10 +1,10 @@
-## propanehax
+# propanehax
 
 gravatars and other goodies for campfire.
 
-### installation
+## installation
 
-#### chrome
+### chrome
 
 * `git clone git://github.com/tmm1/propanehax`
 * navigate to [`chrome://extensions`](chrome://extensions/)
@@ -12,6 +12,6 @@ gravatars and other goodies for campfire.
 * click `Load unpacked extension...`
 * navigate to your checkout and click `Select`
 
-#### propane
+### propane
 
 * `cp caveatPatchor.js ~/Library/Application\ Support/Propane/unsupported/`
